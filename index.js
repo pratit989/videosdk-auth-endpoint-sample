@@ -38,7 +38,7 @@ app.post('/getToken', (req, res) => {
     });
 });
 
-app.get('/getMeetings', (req, res) => {
+app.post('/getMeetings', (req, res) => {
   const zoomMeetingsListUrl = 'https://api.zoom.us/v2/users/me/meetings';
 
   // Get the Zoom API access token from the request body

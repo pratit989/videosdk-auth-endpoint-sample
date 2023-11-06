@@ -38,6 +38,33 @@ app.post('/getToken', (req, res) => {
     });
 });
 
+app.get('/getMeetings', (req, res) => {
+  const zoomMeetingsListUrl = 'https://api.zoom.us/v2/users/me/meetings';
+
+  // Get the Zoom API access token from the request body
+  const zoomApiAccessToken = req.body.zoomApiAccessToken; // Assuming it's in the request body
+
+  if (!zoomApiAccessToken) {
+    return res.status(400).json({ error: 'Zoom API access token is missing in the request body' });
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${zoomApiAccessToken}`,
+  };
+
+  axios
+    .get(zoomMeetingsListUrl, { headers })
+    .then((response) => {
+      console.log('Response from Zoom Meetings List API:', response.data);
+      res.json(response.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching Zoom Meetings List:', error);
+      res.status(500).json({ error: 'Failed to fetch Zoom Meetings List' });
+    });
+});
+
 app.listen(port, () =>
   console.log(`Zoom Video SDK Auth Endpoint Sample Node.js listening on port ${port}!`)
 );
